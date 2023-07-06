@@ -8,8 +8,6 @@ import './updateform.css'
 
 const UpdateForm = ({ setShowEditForm, todo, getTodos }) => {
     const [description, setDescription] = useState('')
-    
-    
 
     useEffect(() => {
         setDescription(todo.description)

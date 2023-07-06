@@ -1,22 +1,36 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+
+
+const storedUser = JSON.parse(localStorage.getItem('user'));
+const initialState = storedUser || {
+  username: 'name',
+  email: 'email',
+  
+};
 
 export const userSlice = createSlice({
-    name: "user",
-    initialState: {
-        name: "name",
-        // email: "name@email.com",
+  initialState,
+  name: 'user',
+  reducers: {
+    login: (state, action) => {
+      const { name, token, email } = action.payload;
+      state.username = name;
+      state.email = email;
+      state.token = token;
+      localStorage.setItem('user', JSON.stringify(state));
     },
-    reducers: {
-        update: (state, action) => {    // state is the current state  and action is the payload
-            state.name = action.payload.name;
-            // state.email = action.payload.email;
-        },
-        remove: (state) => {
-            state.name = "";
-            // state.email = "";
-        },  //Remove the user (set the state to empty object)
-    }
+    logout: (state) => {
+      state.username = 'name';
+      state.email = 'email';
+   
+      localStorage.removeItem('user');
+    },
+   
+  },
 });
 
-export const { update, remove } = userSlice.actions; // Export the actions to be used in the components
-export default userSlice.reducer; //Export the reducer to be used in the store
+export const { login, logout} = userSlice.actions;
+
+export const selectUser = (state) => state.user;
+
+export default userSlice.reducer;

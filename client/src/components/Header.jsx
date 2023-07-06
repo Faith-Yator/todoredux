@@ -1,19 +1,16 @@
 import { Link } from "react-router-dom"
 import { FaHome, FaInfoCircle, FaBook, FaSignOutAlt } from "react-icons/fa"
 import './header.css'
-import { useContext } from 'react'
-import { Context } from "../context/userContext/Context";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-
+import { useSelector,useDispatch } from "react-redux";
+import { logout } from '../redux/userSlice';
 
 function Header() {
-    const name= useSelector ((state)=>state.user.name)
-    const { user, dispatch } = useContext(Context);
-    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user);
     const handleLogout = () => {
-        dispatch({ type: "LOGOUT" });
-        navigate("/");
+      dispatch(logout());
+      
+      navigate('/');
     };
     return (
         <div className="header" >
@@ -23,7 +20,7 @@ function Header() {
                 {user && (
                     <>
                         <Link to='/todos' style={{ color: "green" }}><FaBook id="icons" /> Todos</Link>
-                        <Link onClick={handleLogout} style={{ color: "red" }}><FaSignOutAlt id="icons" /> Logout({name})</Link>
+                        <Link onClick={handleLogout} style={{ color: "red" }}><FaSignOutAlt id="icons" /> Logout</Link>
                     </>
                 )
 
